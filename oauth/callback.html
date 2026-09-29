@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Connecting · J&amp;K Studio Uploader</title>
+<style>
+  :root { --bg:#f7f8fa; --fg:#1d2330; --muted:#5b6475; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#101318; --fg:#e7ebf2; --muted:#9aa4b5; } }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui, "Malgun Gothic", sans-serif;
+         display:flex; align-items:center; justify-content:center; min-height:100vh; padding:0 16px; }
+  .box { max-width:520px; text-align:center; }
+  small { color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="box">
+  <p id="msg">연결 중입니다… / Connecting…</p>
+  <small>J&amp;K Studio Uploader — OAuth callback. This page only forwards the authorization code to the operator's own studio on the local network.</small>
+</div>
+<script>
+// TikTok·Instagram 은 https 고정 리디렉트 주소만 받는다. 이 페이지가 code 를 받아
+// state 에 적힌 스튜디오(이 PC 또는 사내망 주소만)로 넘긴다. 다른 주소면 넘기지 않는다.
+(function () {
+  var q = new URLSearchParams(location.search);
+  var msg = document.getElementById('msg');
+  var st = q.get('state') || '';
+  var info = null;
+  try {
+    var b = st.replace(/-/g, '+').replace(/_/g, '/');
+    while (b.length % 4) b += '=';
+    info = JSON.parse(atob(b));
+  } catch (e) { info = null; }
+  var ok = info && /^(tiktok|instagram)$/.test(info.p || '') &&
+    /^https?:[/][/](127[.]0[.]0[.]1|localhost|10[.][0-9.]+|192[.]168[.][0-9.]+|172[.](1[6-9]|2[0-9]|3[01])[.][0-9.]+)(:[0-9]+)?$/.test(info.r || '');
+  if (!ok) { msg.textContent = '잘못된 연결 요청입니다. 스튜디오 발행 화면에서 [연결]을 다시 눌러 주세요. / Invalid request.'; return; }
+  var out = new URLSearchParams();
+  ['code', 'state', 'error', 'error_description', 'scopes'].forEach(function (k) { if (q.get(k)) out.set(k, q.get(k)); });
+  location.replace(info.r + '/oauth/' + info.p + '?' + out.toString());
+})();
+</script>
+</body>
+</html>
