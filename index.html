@@ -7,50 +7,110 @@
 <meta name="description" content="스튜디오피엘이 운영하는 J&K 채널 전용 내부 영상 업로드 도구 / Internal video upload tool operated by studioPL for the J&K channel">
 <meta name="robots" content="noindex">
 <style>
-  :root { --bg:#ffffff; --fg:#1d2330; --muted:#5b6475; --line:#e3e7ee; --accent:#2f5bd3; }
-  @media (prefers-color-scheme: dark) { :root { --bg:#12151b; --fg:#e7ebf2; --muted:#9aa4b5; --line:#2a303b; --accent:#7ea2ff; } }
+  :root { --bg:#f7f8fa; --card:#ffffff; --fg:#1d2330; --muted:#5b6475; --line:#e3e7ee; --accent:#2f5bd3; --chip:#eef2fb; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#101318; --card:#171b22; --fg:#e7ebf2; --muted:#9aa4b5; --line:#2a303b; --accent:#7ea2ff; --chip:#1f2735; } }
+  * { box-sizing:border-box; }
   body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.7 system-ui, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif; }
-  main { max-width:720px; margin:0 auto; padding:48px 20px 64px; }
-  h1 { font-size:26px; margin:0 0 4px; }
-  h2 { font-size:18px; margin:32px 0 8px; }
-  .sub { color:var(--muted); margin:0 0 28px; }
-  section { border-top:1px solid var(--line); padding-top:8px; }
+  header { background:var(--card); border-bottom:1px solid var(--line); }
+  .wrap { max-width:880px; margin:0 auto; padding:0 20px; }
+  .top { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 0; flex-wrap:wrap; }
+  .brand { font-weight:700; font-size:18px; }
+  nav a { margin-left:16px; color:var(--muted); text-decoration:none; font-size:14px; }
+  nav a:hover { color:var(--accent); }
+  .hero { padding:44px 0 28px; }
+  h1 { font-size:30px; line-height:1.3; margin:0 0 10px; }
+  .lead { color:var(--muted); font-size:17px; margin:0 0 6px; max-width:680px; }
+  .chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:18px; }
+  .chip { background:var(--chip); color:var(--fg); border-radius:999px; padding:4px 12px; font-size:13px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px 24px; margin:0 0 18px; }
+  h2 { font-size:19px; margin:0 0 10px; }
+  h3 { font-size:15px; margin:14px 0 4px; }
+  .steps { list-style:none; padding:0; margin:0; counter-reset:s; }
+  .steps li { counter-increment:s; padding:8px 0 8px 40px; position:relative; border-top:1px solid var(--line); }
+  .steps li:first-child { border-top:0; }
+  .steps li::before { content:counter(s); position:absolute; left:0; top:9px; width:26px; height:26px; border-radius:50%; background:var(--accent); color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px 24px; }
+  @media (max-width:640px) { .grid { grid-template-columns:1fr; } h1 { font-size:24px; } nav a { margin-left:10px; } }
+  .en { color:var(--muted); font-size:14px; }
   a { color:var(--accent); }
-  ul { padding-left:20px; }
-  footer { margin-top:40px; color:var(--muted); font-size:14px; }
+  ul { padding-left:20px; margin:6px 0; }
+  footer { color:var(--muted); font-size:14px; padding:18px 0 48px; }
 </style>
 </head>
 <body>
-<main>
-  <h1>J&amp;K Studio Uploader</h1>
-  <p class="sub">스튜디오피엘(studioPL) 운영 · 민간조사 탐정 J&amp;K 채널 전용 내부 도구<br>Operated by studioPL · Internal tool for the J&amp;K channel</p>
+<header>
+  <div class="wrap top">
+    <div class="brand">J&amp;K Studio Uploader</div>
+    <nav>
+      <a href="#how">사용 방식</a>
+      <a href="#api">YouTube API</a>
+      <a href="privacy.html">개인정보처리방침</a>
+      <a href="terms.html">이용약관</a>
+    </nav>
+  </div>
+</header>
 
-  <section>
-    <h2>소개</h2>
-    <p>J&amp;K Studio Uploader 는 마케팅 대행사 <b>스튜디오피엘(studioPL)</b>이 고객사 <b>민간조사 탐정 J&amp;K</b> 의 위임을 받아, J&amp;K 를 위해 제작한 영상을 <b>J&amp;K 의 YouTube 채널에만</b> 올리기 위해 쓰는 내부 도구입니다. 외부에 제공되는 서비스가 아니며, 채널 운영 담당자 한 명만 사용합니다.</p>
-    <ul>
-      <li>YouTube API 서비스로 하는 일: J&amp;K 채널에 영상 업로드, 썸네일 등록</li>
-      <li>다른 사람의 계정·채널·영상·시청자 정보에는 접근하지 않습니다</li>
-    </ul>
+<div class="wrap">
+  <div class="hero">
+    <h1>J&amp;K 채널 전용<br>영상 업로드 도구</h1>
+    <p class="lead">마케팅 대행사 <b>스튜디오피엘(studioPL)</b>이 고객사 <b>민간조사 탐정 J&amp;K</b> 의 위임을 받아, J&amp;K 를 위해 제작한 영상을 J&amp;K 의 YouTube 채널에만 올리는 내부 도구입니다.</p>
+    <p class="lead en">An internal tool operated by studioPL, a marketing agency, to upload videos produced for its client J&amp;K Private Investigation to J&amp;K's own YouTube channel only.</p>
+    <div class="chips">
+      <span class="chip">내부 전용 · Internal only</span>
+      <span class="chip">사용자 1명 · Single user</span>
+      <span class="chip">채널 1개 · One channel</span>
+      <span class="chip">판매·배포 안 함 · Not distributed</span>
+    </div>
+  </div>
 
-    <h2>About</h2>
-    <p>J&amp;K Studio Uploader is an internal tool operated by <b>studioPL</b>, a marketing agency, on behalf of its client <b>J&amp;K Private Investigation</b>. It uploads videos produced for J&amp;K <b>to J&amp;K's own YouTube channel only</b>, which studioPL manages with the channel owner's authorization. It is not offered to the public and has a single user, the channel manager.</p>
-    <ul>
-      <li>Uses YouTube API Services to upload videos and set thumbnails on the J&amp;K channel</li>
-      <li>Does not access any other user's account, channel, videos or viewer data</li>
-    </ul>
+  <section id="how">
+    <h2>사용 방식 · How it works</h2>
+    <ol class="steps">
+      <li><b>영상 완성</b> — 스튜디오피엘 제작팀이 J&amp;K 채널용 쇼츠 영상과 썸네일을 완성합니다.<br><span class="en">Our team finishes a Short and its thumbnail for the J&amp;K channel.</span></li>
+      <li><b>담당자 검토</b> — 채널 운영 담당자가 영상·제목·설명을 확인하고 업로드(또는 예약)를 결정합니다.<br><span class="en">The channel manager reviews the video, title and description and approves the upload or schedules it.</span></li>
+      <li><b>채널 연결</b> — 담당자가 J&amp;K 채널의 Google 계정으로 한 번 승인합니다 (Google OAuth 2.0, 업로드 권한만).<br><span class="en">The manager authorizes once with the channel's Google account (Google OAuth 2.0, upload permission only).</span></li>
+      <li><b>업로드</b> — 도구가 YouTube API 서비스로 영상을 올리고 썸네일을 등록합니다. 모든 업로드는 '변경되거나 합성된 콘텐츠' 공개를 켭니다.<br><span class="en">The tool uploads the video and sets its thumbnail through YouTube API Services, always enabling the altered or synthetic content disclosure.</span></li>
+    </ol>
+  </section>
+
+  <section id="api">
+    <h2>YouTube API 서비스 사용 · Use of YouTube API Services</h2>
+    <p>이 도구는 <b>YouTube API 서비스</b>를 사용합니다. 사용하는 기능은 두 가지뿐입니다.<br><span class="en">This tool uses YouTube API Services, for two functions only.</span></p>
+    <div class="grid">
+      <div>
+        <h3>하는 일 · What it does</h3>
+        <ul>
+          <li>J&amp;K 채널에 영상 업로드 <span class="en">(videos.insert)</span></li>
+          <li>업로드한 영상의 썸네일 등록 <span class="en">(thumbnails.set)</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>하지 않는 일 · What it does not do</h3>
+        <ul>
+          <li>다른 계정·채널·영상에 접근하지 않음</li>
+          <li>시청자·구독자·댓글·분석 정보를 읽거나 저장하지 않음</li>
+          <li>YouTube 데이터를 외부에 제공하지 않음</li>
+        </ul>
+      </div>
+    </div>
+    <p>도구 사용에는 <a href="https://www.youtube.com/t/terms" rel="noopener">YouTube 서비스 약관</a>이 적용되고, Google 이 처리하는 정보에는 <a href="https://policies.google.com/privacy" rel="noopener">Google 개인정보처리방침</a>이 적용됩니다. 권한은 언제든 <a href="https://myaccount.google.com/permissions" rel="noopener">Google 계정 → 서드파티 액세스</a>에서 철회할 수 있습니다.<br>
+    <span class="en">Use of the tool is subject to the YouTube Terms of Service; information processed by Google is governed by the Google Privacy Policy. Access can be revoked at any time from Google Account third-party access.</span></p>
   </section>
 
   <section>
-    <h2>링크 · Links</h2>
+    <h2>정책 · Policies</h2>
     <ul>
       <li><a href="privacy.html">개인정보처리방침 · Privacy Policy</a></li>
+      <li><a href="terms.html">이용약관 · Terms of Service</a></li>
       <li><a href="https://www.youtube.com/t/terms" rel="noopener">YouTube 서비스 약관 · YouTube Terms of Service</a></li>
       <li><a href="https://policies.google.com/privacy" rel="noopener">Google 개인정보처리방침 · Google Privacy Policy</a></li>
     </ul>
   </section>
 
-  <footer>운영 / Operator: 스튜디오피엘 (studioPL) · 문의 / Contact: <a href="mailto:chae_inn@naver.com">chae_inn@naver.com</a></footer>
-</main>
+  <footer>
+    운영 / Operator: 스튜디오피엘 (studioPL) · 고객사 / Client: 민간조사 탐정 J&amp;K<br>
+    문의 / Contact: <a href="mailto:chae_inn@naver.com">chae_inn@naver.com</a>
+  </footer>
+</div>
 </body>
 </html>
